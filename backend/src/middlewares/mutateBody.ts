@@ -9,8 +9,8 @@ export const bcryptPassword = (
 ) => {
   bcrypt.genSalt(SALT_ROUNDS, function (err, salt) {
     bcrypt.hash(req.body.password, salt, function (err, hash) {
-      console.log("hash:", hash);
-      return hash;
+      req.body.hashPassword = hash;
+      next();
     });
   });
 };
