@@ -7,20 +7,19 @@ export const bcryptPassword = (
   res: Response,
   next: NextFunction
 ) => {
-  bcrypt.genSalt(SALT_ROUNDS, function (err, salt) {
-    bcrypt.hash(req.body.password, salt, function (err, hash) {
-      req.body.hashPassword = hash;
-      next();
+  const salt = bcrypt.genSaltSync(SALT_ROUNDS);
+  const hash = bcrypt.hashSync(req.body.password, salt);
+  req.body.hashPassword = hash;
+  next();
+};
+
+export const comparePasswords = async (
+  requestPassword: string,
+  userPassword: string
+): Promise<boolean> => {
+  return new Promise((resolve) => {
+    bcrypt.compare(requestPassword, userPassword).then((compare) => {
+      resolve(compare);
     });
   });
 };
-
-// export const comparePasswords = (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   bcrypt.compare(req.body.password, bcryptPassword, function (err, result) {
-//     // result == true
-//   });
-// };

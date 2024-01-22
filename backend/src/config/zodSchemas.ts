@@ -6,3 +6,8 @@ export const signUpBodySchema = z.object({
   firstName: z.string().max(50),
   lastName: z.string().max(50),
 });
+
+export const loginBodySchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6).max(20),
+});
