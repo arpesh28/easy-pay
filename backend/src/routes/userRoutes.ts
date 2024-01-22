@@ -3,9 +3,11 @@ import { User } from "../config/db";
 import {
   validateLoginBody,
   validateSignUpBody,
+  validateUpdateUserBody,
 } from "../middlewares/validations";
 import jwt from "jsonwebtoken";
 import { bcryptPassword, comparePasswords } from "../middlewares/mutateBody";
+import { userMiddleware } from "../middlewares/authMiddlewares";
 
 const router = Router();
 
@@ -56,6 +58,16 @@ router.post(
     );
 
     res.json({ data: user, token });
+  }
+);
+
+router.put(
+  "/",
+  validateUpdateUserBody,
+  userMiddleware,
+  async (req: Request, res: Response) => {
+    const { user, ...rest } = req.body;
+    console.log("res:", rest);
   }
 );
 

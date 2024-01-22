@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { loginBodySchema, signUpBodySchema } from "../config/zodSchemas";
+import {
+  loginBodySchema,
+  signUpBodySchema,
+  updateUserBodySchema,
+} from "../config/zodSchemas";
 
 const getErrors = (errors: any) => {
   return errors?.map((err: { path: number[]; message: string }) => ({
@@ -29,4 +33,18 @@ const validateLoginBody = (req: Request, res: Response, next: NextFunction) => {
   if (validate.success) next();
 };
 
-export { validateSignUpBody, validateLoginBody };
+const validateUpdateUserBody = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const validate = updateUserBodySchema.parse(req.body);
+  console.log("validate:", validate);
+  // if (!validate) {
+  //   const errors = getErrors(validate.error.errors);
+  //   return res.status(400).json({ message: "Invalid inputs!", errors });
+  // }
+  // if (validate.success) next();
+};
+
+export { validateSignUpBody, validateLoginBody, validateUpdateUserBody };
