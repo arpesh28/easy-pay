@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import jwt from "jsonwebtoken";
-import { User } from "../config/db";
+import { Account, User } from "../config/db";
 import { userMiddleware } from "../middlewares/authMiddlewares";
 import { bcryptPassword, comparePasswords } from "../middlewares/mutateBody";
 import {
@@ -34,7 +34,7 @@ router.post(
   validateSignUpBody,
   bcryptPassword,
   async (req: Request, res: Response) => {
-    const { email, password, firstName, lastName, hashPassword } = req.body;
+    const { email, firstName, lastName, hashPassword } = req.body;
 
     const existingUser = await User.findOne({ email });
 
@@ -47,12 +47,18 @@ router.post(
       firstName,
       lastName,
     });
+
+    const newAccount = await Account.create({
+      user: newUser._id,
+      balance: Math.round(1 + Math.random() * 10000),
+    });
+
     const token = jwt.sign(
       { email, firstName, lastName },
       process.env.JWT_SECRET!
     );
 
-    res.json({ data: newUser, token });
+    res.json({ data: newUser, token, account: newAccount });
   }
 );
 
