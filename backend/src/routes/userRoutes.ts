@@ -66,8 +66,15 @@ router.put(
   validateUpdateUserBody,
   userMiddleware,
   async (req: Request, res: Response) => {
-    const { user, ...rest } = req.body;
-    console.log("res:", rest);
+    const updateUser = await User.findOneAndUpdate(
+      { _id: req.body.user._id },
+      {
+        ...req.body.data,
+      }
+    );
+    res.json({
+      data: updateUser,
+    });
   }
 );
 

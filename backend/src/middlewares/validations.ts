@@ -38,10 +38,13 @@ const validateUpdateUserBody = (
   res: Response,
   next: NextFunction
 ) => {
+  const user = req.body.user;
   const validate = updateUserBodySchema.parse(req.body);
-  console.log("validate:", validate);
+  req.body.data = validate;
+  req.body.user = user;
+  next();
   // if (!validate) {
-  //   const errors = getErrors(validate.error.errors);
+  //   const errors = getErrors(validate?.error?.errors);
   //   return res.status(400).json({ message: "Invalid inputs!", errors });
   // }
   // if (validate.success) next();
