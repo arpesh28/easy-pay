@@ -8,7 +8,7 @@ const userMiddleware = async (
   next: NextFunction
 ) => {
   const { authorization } = req.headers;
-  if (!authorization)
+  if (!authorization || !authorization.startsWith("Bearer "))
     return res.status(403).json({
       message: "Unauthorized",
     });
@@ -29,7 +29,7 @@ const userMiddleware = async (
     req.body.user = user;
     next();
   } catch (err) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(403).json({ message: "Unauthorized" });
   }
 };
 

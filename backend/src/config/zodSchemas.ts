@@ -23,3 +23,8 @@ export const updateUserBodySchema = selectedUpdateUserSchema.pick({
   firstName: true,
   lastName: true,
 });
+
+export const usersQuerySchema = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+});

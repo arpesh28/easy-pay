@@ -3,6 +3,7 @@ import {
   loginBodySchema,
   signUpBodySchema,
   updateUserBodySchema,
+  usersQuerySchema,
 } from "../config/zodSchemas";
 
 const getErrors = (errors: any) => {
@@ -43,11 +44,26 @@ const validateUpdateUserBody = (
   req.body.data = validate;
   req.body.user = user;
   next();
-  // if (!validate) {
-  //   const errors = getErrors(validate?.error?.errors);
-  //   return res.status(400).json({ message: "Invalid inputs!", errors });
-  // }
-  // if (validate.success) next();
 };
 
-export { validateSignUpBody, validateLoginBody, validateUpdateUserBody };
+const validateGetUsersQuery = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const params = req.query || "";
+  const validate = usersQuerySchema.safeParse(params);
+  if (!validate || !validate.success) {
+    const errors = getErrors(validate.error.errors);
+    return res.status(400).json({ message: "Invalid Params!", errors });
+  }
+  next();
+};
+
+export {
+  validateSignUpBody,
+  validateLoginBody,
+  validateUpdateUserBody,
+  validateGetUsersQuery,
+  getErrors,
+};

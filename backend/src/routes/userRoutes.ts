@@ -1,15 +1,33 @@
 import { Request, Response, Router } from "express";
+import jwt from "jsonwebtoken";
 import { User } from "../config/db";
+import { userMiddleware } from "../middlewares/authMiddlewares";
+import { bcryptPassword, comparePasswords } from "../middlewares/mutateBody";
 import {
+  validateGetUsersQuery,
   validateLoginBody,
   validateSignUpBody,
   validateUpdateUserBody,
 } from "../middlewares/validations";
-import jwt from "jsonwebtoken";
-import { bcryptPassword, comparePasswords } from "../middlewares/mutateBody";
-import { userMiddleware } from "../middlewares/authMiddlewares";
 
 const router = Router();
+
+router.get(
+  "/all-users",
+  userMiddleware,
+  validateGetUsersQuery,
+  async (req, res) => {
+    const params = req.query || "";
+
+    const filter = [];
+    for (const [key, value] of Object.entries(params)) {
+      filter.push({ [key]: value });
+    }
+    const query = filter.length > 0 ? { $or: filter } : {};
+    const users = await User.find(query);
+    res.json({ data: users });
+  }
+);
 
 router.post(
   "/signup",
@@ -49,7 +67,6 @@ router.post(
     if (!user) return res.status(404).json({ message: "User doesn't exist" });
 
     const auth: boolean = await comparePasswords(password, user.password);
-    console.log("auth:", auth);
     if (!auth) return res.status(401).json({ message: "Invalid Credentials" });
 
     const token = jwt.sign(
