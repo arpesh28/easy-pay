@@ -6,8 +6,9 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="min-h-screen w-screen p-12 grid grid-cols-2">
-      <div className="rounded-[2rem] bg-black text-white flex items-center justify-center text-left relative">
-        <div className="max-w-96 relative">
+      <div className="rounded-[2rem] bg-black text-white overflow-hidden py-10 px-10 text-left relative">
+        <Image src="/bg-auth.jpg" alt="bg" objectFit="cover" fill />
+        <div className=" relative">
           <h2 className="text-5xl font-medium tracking-wide mb-6">
             Banking That&apos;s Always On Your Side.
           </h2>
