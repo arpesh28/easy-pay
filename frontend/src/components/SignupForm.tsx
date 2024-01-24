@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff } from "lucide-react";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -25,7 +24,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function LoginForm() {
+export default function SignUpForm() {
   const [showPass, setShowPass] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,6 +40,38 @@ export default function LoginForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl className="rounded-xl h-12 border-gray-200 border">
+                <Input
+                  placeholder="Enter your First Name"
+                  className="placeholder-gray-50"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl className="rounded-xl h-12 border-gray-200 border">
+                <Input
+                  placeholder="Enter your Last Name"
+                  className="placeholder-gray-50"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="username"
@@ -82,7 +113,7 @@ export default function LoginForm() {
             className="w-full mt-6 rounded-2xl h-12"
             onClick={(e) => router.replace("/dashboard")}
           >
-            Login
+            Register
           </Button>
         </div>
       </form>
