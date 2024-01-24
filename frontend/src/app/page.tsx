@@ -6,9 +6,9 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="min-h-screen w-screen p-12 grid grid-cols-2">
-      <div className="rounded-[2rem] bg-black text-white flex items-center justify-center text-left ">
+      <div className="rounded-[2rem] bg-black text-white flex items-center justify-center text-left relative">
         <div className="max-w-96 relative">
-          <h2 className="text-5xl font-light tracking-wide mb-6">
+          <h2 className="text-5xl font-medium tracking-wide mb-6">
             Banking That&apos;s Always On Your Side.
           </h2>
           <p className="text-lg font-extralight tracking-wider">
